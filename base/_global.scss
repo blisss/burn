@@ -1,0 +1,88 @@
+/// 
+$base-ff: sans-serif;
+$base-fz: 14px;
+$base-lh: 1;
+$base-bgc: #f5f5f5;
+$base-c: #333;
+
+
+$export-global: true;
+@include export($export-global) {
+
+    /// Internet Explorer 10 doesn't differentiate device
+    /// width from viewport width.
+    ///
+    /// @link http://timkadlec.com/2013/01/windows-phone-8-and-device-width/
+    @at-root {
+	@-moz-viewport      { width: device-width; }
+	@-ms-viewport       { width: device-width; }
+	@-o-viewport        { width: device-width; }
+	@-webkit-viewport   { width: device-width; }
+	@viewport           { width: device-width; }
+    }
+    
+    *,
+    *:before,
+    *:after {
+	box-sizing: border-box;	
+    }
+    
+    html {	
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	-webkit-tap-highlight-color: rgba(0,0,0,0);
+	overflow-x: hidden;
+	overflow-y: auto;	
+	font-size: $base-fz;	
+    }
+
+    body {
+	margin: 0;
+	font-family: $base-ff;
+	font-size: $base-fz;
+	line-height: $base-lh;	
+	color: $base-c;
+	background-color: $base-bgc;	
+    }
+
+    /// Block display.
+    article,
+    aside,
+    details,
+    figcaption,
+    figure,
+    footer,
+    header,
+    hgroup,
+    main,
+    menu,
+    nav,
+    section,
+    summary {
+	display: block;
+    }
+
+
+    /// Inline-block display
+    audio,
+    canvas,
+    progress,
+    video {
+	display: inline-block;
+	vertical-align: baseline;
+    }
+
+    /// Audio elem without controls.
+    audio:not([controls]) {
+	display: none;
+	height: 0;
+    }
+
+    /// Hide shadow dom.
+    [hidden],
+    template {
+	display: none;
+    }
+}
