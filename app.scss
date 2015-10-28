@@ -1,0 +1,319 @@
+@import
+"utils/variables",
+"utils/functions",
+"utils/mixins",
+"utils/helpers";
+
+@import
+"vendors/font-awesome/font-awesome",
+"vendors/normalize";
+
+@import
+"base/reset",
+"base/base",
+"base/typography";
+
+//@import
+//"layout/nav",
+//"layout/topBar",
+//"layout/menu",
+//"layout/preview";
+
+//@import
+//"components/button",
+//"components/card",
+//"components/forms",
+//"components/avatar",
+//"components/labels",
+//"components/tabs",
+//"components/img";
+
+//@import
+//"pages/home";
+
+//@import
+//"themes/theme";
+
+$primary-color: #555;
+
+$base-fz: 14px;
+$base-lh: 1;
+$base-unit: rem;
+
+$is-flex: true;
+$is-calc: true;
+
+$topBar-h: 48px;
+$topBar-bg: #555;
+$topBar-color: #ddd;
+
+@keyframes flash {
+  from, 50%, to {
+    opacity: 1;
+  }
+
+  25%, 75% {
+    opacity: 0;
+  }
+}
+
+@function convert_px($value, $fz: $base-fz, $unit: $base-unit) {
+    $nv: 0;
+    @if $unit == rem {
+	$nv: $value / 1rem;
+    } @else if $unit == em {
+	$nv: $value / 1em;
+    }
+
+    @return $nv * $fz;
+}
+
+@function convert_unit($value, $fz: $base-fz, $unit: $base-unit) {
+    @return #{$value / $fz}$unit;
+}
+
+@function comput_h($fz, $lh, $pv, $bdv, $mv) {
+    @return $fz * $lh + $pv * 2 + $bdv * 2 + $mv * 2;
+}
+
+@function comput_pv($conh, $h) {
+    @return ($conh - $h) / 2;
+}
+
+%flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;    
+}
+
+%flex-layout {
+    display: flex;
+    align-items: stretch;    
+}
+
+@mixin flex($value) {
+    @if $value {
+	flex: 0 1 $value;
+    } @else {
+	flex: 1 1 auto;
+    }
+}
+
+.none {
+    display: none;
+}
+
+.topBar {
+    background-color: $topBar-bg;    
+    height: $topBar-h;
+    box-shadow: 0 2px 2px $topBar-bg;
+
+    @extend %fill-h;
+
+    z-index: 9999;
+    
+    
+
+    @if is-flex {
+	@extend %flex-layout;
+    } @else {
+	@include clearfix();
+    }
+}
+
+$logo-w: 64px;
+$logo-img-h: 42px;
+.logo {    
+    @if is-flex {
+	@include flex($logo-w);
+	@extend %flex-center;
+    } @else {
+	float: left;
+	width: $logo-w;
+	text-align: center;
+	padding: comput_pv($topBar-h, $logo-img-h) 0;
+    }
+}
+
+$searchBar-w: calc(100% - $logo-w - $menu-w);
+$searchBar-pv: .5rem;
+$searchBar-bd: 1px;
+$searchBar-h: comput_h($base-fz, $base-lh, convert_px($searchBar-pv), $searchBar-bd, 0);
+
+.searchBar {
+    @if is-flex {
+	flex: 1 1 auto;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    } @else {
+	width: $searchBar-w;
+	padding: comput_pv($topBar-h, $searchBar-h) 0;
+    }
+    
+    &__textfield {
+
+	width: 100%;
+	position: relative;
+	
+	input {
+	    border: none;
+	    background: transparent;
+	    border: $searchBar-bd solid $topBar-color;
+	    width: 100%;
+	    line-height: $base-lh;
+	    padding: $searchBar-pv 2rem $searchBar-pv .5rem;
+	    color: $topBar-color;
+	}
+	
+	button {
+	    border: none;
+	    background: transparent;
+	    color: $topBar-bg;
+	    background-color: $topBar-color;
+	    padding: .5rem;
+	    
+	    position: absolute;
+	    right: 0;
+	    top: 0;
+	    bottom: 0;
+	}
+	
+    }
+}
+
+$menu-w: 48px;
+$menu-trigger-h: 14px;
+
+%fill-v {
+    position: absolute;
+    top: 0;
+    bottom: 0;    
+}
+
+%fill-h {
+    position: absolute;
+    left: 0;
+    right: 0;
+}
+
+%fill {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+}
+
+.menu {
+
+    @if is-flex {
+	flex: 0 1 $menu-w;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+    } @else {
+	min-width: $menu-w;
+	text-align: center;
+	padding: comput_pv($topBar-h, $menu-trigger-h) 0;	
+    }
+    
+    cursor: pointer;
+
+    &__trigger {
+	position: relative;
+	display: inline-block;	
+	width: 20px;	
+	height: $menu-trigger-h;
+	
+	&-item {
+	    display: inline-block;
+	    border-top: 1px solid;	    
+	    color: $topBar-color;
+
+	    @extend %fill-h;
+
+	    transition: all .28s ease-in-out 0s;
+
+	    &--top    { top: 0%; }
+	    &--middle { top: 50%; }
+	    &--bottom { top: 100%; }
+
+	    /// trigger animition
+	    .menu__trigger.active &--top {
+		top: 50%;
+		transform: rotate(-45deg);
+	    }
+
+	    .menu__trigger.active &--bottom {
+		top: 50%;
+		transform: rotate(45deg);
+	    }
+
+	    .menu__trigger.active &--middle {
+		transform: scale(0, 0);
+	    }
+	}
+    }    
+}
+
+.nav {
+    @extend %fill;
+    padding-top: $topBar-h + 3;
+    background-color: darken($primary-color, 20%);
+
+    overflow-y: scroll;
+    overflow-x: hidden;    
+    
+    
+    &__item {
+
+	display: block;	
+	padding: 1rem;	
+	color: $topBar-color;
+	cursor: pointer;
+
+	&.active {
+	    transform: translate(100%, 0);
+	    
+	}
+    }
+}
+
+.multi {
+
+    &__list {
+	
+	display: none;
+	
+	&.state--open { display: block; }
+	&.state--close { display: none; }
+
+	transform: translate(50%, 0);
+	transition: all .2s ease-in-out 0s;
+
+	&.active {	    
+	    transform: translate(0%, 0);
+	    opacity: 1;
+	}
+    }
+
+    &__list-item {
+
+	display: none;
+	
+	&.state--open { display: block; }
+	&.state--close { display: none; }	
+    }
+
+}
+
+@function range($max, $init: 1, $step: 1) {
+    $out: ();
+    $i: $init;
+    @while $i <= $max {
+	$out: join($out, $i);
+	$i: $i + $step;
+    }
+    @return $out;
+}
