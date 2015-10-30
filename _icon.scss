@@ -1,0 +1,166 @@
+////
+/// Icons
+///
+/// Pure css build.
+/// Also see http://saeedalipoor.github.io/icono/
+///
+/// @author Yufi
+///
+////
+
+/// Export option.
+/// @type Boolean
+$is-export-ic: true;
+
+///
+/// Export styles.
+///
+/// @todo Export every icon.
+///
+/// @require {Mixin} export
+/// @require {Mixin} fill-h
+/// @require {Function} cc-px - Convert rem/em to px.
+/// @require {Function} cc-em - Convert px to em.
+/// @require {Variable} $baze-fz - Base font size.
+///
+@include export("Icons", $is-export-ic) {
+
+    ///
+    /// Base icon style.
+    ///
+    /// @example ic - style
+    ///
+    /// <span class="ic ic--2x">
+    ///  <i class="ic__bar"></i>
+    /// </span>
+    ///
+    /// @todo Add flex supports.
+    ///
+    .ic {
+
+	/// Require base font size. Easy for compute proportion.
+	font-size: 1rem;
+	$ic-fz: cc-px(1rem);
+
+	/// Base size 16px/16px.
+	width: 1em;
+	height: 1em;
+
+	/// Reset.
+	display: inline-block;
+	vertical-align: middle;
+	text-align: left;
+	font-style: normal;
+	cursor: pointer;
+	color: inherit;
+
+	/// Public styles.
+	/// @todo Replace as a placeholder.
+	[class^="ic__"] {
+	    display: inline-block;
+	    position: relative;
+	    transition: all .2s ease-in-out 0s;
+
+	    &:before,
+	    &:after {
+		content: "";
+		pointer-events: none;
+		position: absolute;
+		transition: all .2s ease-in-out 0s;
+	    }
+	}
+
+	/// @todo Use list to init it.
+	&--2x { font-size: 2rem; }
+	&--3x { font-size: 3rem; }
+	&--4x { font-size: 4rem; }
+		
+	///
+	/// Menu bar icon.
+	///
+	&__bar {
+
+	    /// Size. 10px/1px
+	    $ic-bar-w: 10px;
+	    $ic-bar-h: 1px;
+
+	    /// Space.
+	    $ic-bar-sp: -4px;
+	    
+	    width: cc-em($ic-bar-w);
+	    margin: cc-em(($ic-fz - $ic-bar-h) / 2) cc-em(($ic-fz - $ic-bar-w) / 2);
+
+	    &,
+	    &:before,
+	    &:after {
+		height: cc-em($ic-bar-h);
+		box-shadow: 0 0 0 $ic-fz inset;
+		@include fill-h(null);
+	    }
+
+	    &:before { top: cc-em($ic-bar-sp); }
+	    &:after { bottom: cc-em($ic-bar-sp); }
+	}
+
+	///
+	/// Heart icon.
+	///
+	&__heart {
+
+	    /// Size. 10px
+	    $ic-heart-s: 10px;
+	    $ic-heart-bd: 1px;
+	    $ic-heart-s-a: 5px;
+	    $ic-heart-s-b: 10px;
+	    $ic-heart-s-adt: -4px;
+	    $ic-heart-s-bdt: -1px;
+	    
+	    width: cc-em($ic-heart-s);
+	    height: cc-em($ic-heart-s);
+	    margin: cc-em(4px) cc-em(3px) cc-em(2px) cc-em(3px);
+	    
+	    border-radius: cc-em($ic-heart-bd) 0;
+
+	    /// Reset border width.
+	    border-right: cc-em($ic-heart-bd) solid;
+	    border-bottom: cc-em($ic-heart-bd) solid;
+	    
+	    transform: rotate(45deg);
+
+	    &:before,
+	    &:after {
+		border: cc-em($ic-heart-bd) solid;
+	    }
+
+	    &:before {
+		width: cc-em($ic-heart-s-a);
+		height: cc-em($ic-heart-s-b);
+		left: cc-em($ic-heart-s-adt);
+		bottom: cc-em($ic-heart-s-bdt);		
+		border-radius: cc-em($ic-heart-s) 0 0 cc-em($ic-heart-s);
+		border-right: none;
+	    }
+	    &:after {
+		width: cc-em($ic-heart-s-b);
+		height: cc-em($ic-heart-s-a);		
+		top: cc-em($ic-heart-s-adt);
+		right: cc-em($ic-heart-s-bdt);
+		border-radius: cc-em($ic-heart-s) cc-em($ic-heart-s) 0 0;
+		border-bottom: none;
+	    }
+
+	    ///
+	    /// Solid heart icon.
+	    /// 
+	    &-o {
+		@extend .ic__heart;
+		box-shadow: 0 0 0 $ic-fz inset;
+		
+		&:before,
+		&:after {
+		    box-shadow: 0 0 0 $ic-fz inset;
+		}
+	    }
+	}
+    }
+};
