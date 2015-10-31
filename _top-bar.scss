@@ -1,0 +1,76 @@
+///
+/// @require {Mixin} shadow - Shadows.
+/// @require {Mixin} fixed - Fixed page top.
+/// @require {Variable} $grey-color
+/// @require {Variable} $base-c-reverse
+
+@include export(
+    "\a
+Export top bar styles.
+
+Base height is 4rem(64px), so body should add
+rem top padding.
+
+Top bar include menu trigger, logo, searcher,
+title, other types icon bar and so on...
+
+Top bar used for home page or detail pages has 
+three parts. The middle part maybe a title. The 
+left and right parts is a icon bar. Icon bar size 
+is 4rem/4rem and icon should be 2x itself. Title 
+width auto grow. Every part should be center 
+contents.
+
+And if top bar used for list page, It maybe
+container a search bar. Search bar expand fill 
+the top bar should be top everything. If search
+bar has hot words or history words, The height of
+top bar should grow to 5rem, and the words number 
+should less then three or four.
+"
+) {
+    /// Top bar height and padding.
+    /// @type Number
+    $top-bar-h: 4rem;
+    $top-bar-p: 1rem;
+        
+    body,
+    .body {
+	/// Size.
+	padding-top: $top-bar-h;
+    }
+
+    
+    .top-bar {
+	/// Size.
+	height: $top-bar-h;
+	padding: $top-bar-p;
+
+	/// Display and position.
+	///
+	/// Use fixed position is not work well on
+	/// devices. Has any better way?
+	@include fixed(top);
+	display: flex;
+	
+	/// Themes.
+	background-color: $primary-color;
+	color: #fff;
+	@include shadow();
+
+	&__item {
+	    display: flex;
+	    justify-content: center;
+	    align-items: center;
+	    user-select: none;
+	}
+	
+	&__item--middle {
+	    flex: 1 1 auto;
+	}
+
+	&__item--aside {
+	    flex: 0 1 $top-bar-h - $top-bar-p * 2;
+	}	
+    }
+};
