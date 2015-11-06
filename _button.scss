@@ -1,0 +1,65 @@
+///
+/// button.
+/// 
+
+/// FIXME: need global reset.
+@mixin button-base() {
+    background: transparent;
+    border: none;
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    outline: none;
+    touch-action: manipulation;
+    user-select: none;
+    &:focus {
+	outline: none;
+    }
+    &::-moz-focus-inner {
+	border: 0;
+    }
+}
+
+@mixin button-box($font-size, $width, $height, $radius) {
+    line-height: 1;
+    padding: ($height - $font-size) / 2 1px;
+    min-height: $height;
+    min-width: $width;
+    border-radius: $radius;
+}
+
+@mixin button-color($background-color, $font-color) {
+    background-color: $background-color;
+    color: $font-color;
+}
+
+/// box: fz w h lh
+$button-font-size: 14px;
+$button-width: 130px;
+$button-height: 36px;
+$button-border-radius: 2px;
+/// color: bgc fc
+$button-background-color: #555;
+$button-font-color: #FFF;
+
+%btn {
+    @include button-base;
+    @include button-box($button-font-size, $button-width, $button-height, $button-border-radius);
+    @include button-color($button-background-color, $button-font-color);
+    &:hover {
+	background-color: darken($button-background-color, 10%);
+    }
+    &:focus {}
+    &:active {}
+    &[disabled] {}
+}
+
+/// TEST
+.test.btn {
+    @extend %btn;
+}
